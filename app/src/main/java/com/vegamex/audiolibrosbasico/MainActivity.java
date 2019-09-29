@@ -25,19 +25,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Aplicacion app = (Aplicacion) getApplication();
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        recyclerView.setAdapter(app.getAdaptador());
-        layoutManager = new GridLayoutManager(this, 2);
-        recyclerView.setLayoutManager(layoutManager);
-
-        app.getAdaptador().setOnItemClickListener(new View.OnClickListener(){
-            @Override public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Seleccionado el elemento: "
-                                + recyclerView.getChildAdapterPosition(v),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+//        Aplicacion app = (Aplicacion) getApplication();
+//        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+//        recyclerView.setAdapter(app.getAdaptador());
+//        layoutManager = new GridLayoutManager(this, 2);
+//        recyclerView.setLayoutManager(layoutManager);
+//
+//        app.getAdaptador().setOnItemClickListener(new View.OnClickListener(){
+//            @Override public void onClick(View v) {
+//                Toast.makeText(MainActivity.this, "Seleccionado el elemento: "
+//                                + recyclerView.getChildAdapterPosition(v),
+//                        Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
