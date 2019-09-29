@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.vegamex.audiolibrosbasico.fragments.SelectorFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,6 +25,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if ((findViewById(R.id.contenedor_pequeno) != null) &&
+                (getSupportFragmentManager().findFragmentById(
+                        R.id.contenedor_pequeno) == null)){
+            SelectorFragment primerFragment = new SelectorFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.contenedor_pequeno, primerFragment).commit();
+        }
 
 //        Aplicacion app = (Aplicacion) getApplication();
 //        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
