@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.vegamex.audiolibrosbasico.AdaptadorLibros;
 import com.vegamex.audiolibrosbasico.Aplicacion;
+import com.vegamex.audiolibrosbasico.MainActivity;
 import com.vegamex.audiolibrosbasico.R;
 import java.util.Vector;
 
@@ -39,9 +40,8 @@ public class SelectorFragment<Libro> extends Fragment {
         adaptador.setOnItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(actividad, "Seleccionado el elemento: "
-                                + recyclerView.getChildAdapterPosition(v),
-                        Toast.LENGTH_SHORT).show();
+                ((MainActivity) actividad).mostrarDetalle(
+                        recyclerView.getChildAdapterPosition(v));
             }
         });
         return vista;
