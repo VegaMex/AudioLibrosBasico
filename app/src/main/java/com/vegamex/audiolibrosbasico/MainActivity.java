@@ -7,17 +7,38 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Aplicacion app = (Aplicacion) getApplication();
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setAdapter(app.getAdaptador());
+        layoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(layoutManager);
+
+        app.getAdaptador().setOnItemClickListener(new View.OnClickListener(){
+            @Override public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Seleccionado el elemento: "
+                                + recyclerView.getChildAdapterPosition(v),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
