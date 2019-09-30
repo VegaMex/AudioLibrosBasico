@@ -18,6 +18,7 @@ public class AdaptadorLibros extends
     protected Vector<Libro> vectorLibros; //Vector con libros a visualizar
     private Context contexto;
     private View.OnClickListener onClickListener;
+    private View.OnLongClickListener onLongClickListener;
 
     public AdaptadorLibros(Context contexto, Vector<Libro> vectorLibros) {
         inflador = (LayoutInflater) contexto
@@ -42,12 +43,17 @@ public class AdaptadorLibros extends
         this.onClickListener = onClickListener;
     }
 
+    public void setOnItemLongClickListener(View.OnLongClickListener onLongClickListener) {
+        this.onLongClickListener = onLongClickListener;
+    }
+
     // Creamos el ViewHolder con las vista de un elemento sin personalizar
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Inflamos la vista desde el xml
         View v = inflador.inflate(R.layout.elemento_selector, null);
         v.setOnClickListener(onClickListener);
+        v.setOnLongClickListener(onLongClickListener);
         return new ViewHolder(v);
     }
 
