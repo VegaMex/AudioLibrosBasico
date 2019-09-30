@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.vegamex.audiolibrosbasico.AdaptadorLibrosFiltro;
 import com.vegamex.audiolibrosbasico.Libro;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,9 +30,11 @@ import java.util.Vector;
 public class SelectorFragment extends Fragment {
     private Activity actividad;
     private RecyclerView recyclerView;
-    private AdaptadorLibros adaptador;
+    private AdaptadorLibrosFiltro adaptador;
     private Vector<Libro> vectorLibros;
-    @Override public void onAttach(Context contexto) {
+
+    @Override
+    public void onAttach(Context contexto) {
         super.onAttach(contexto);
         if (contexto instanceof Activity) {
             this.actividad = (Activity) contexto;
@@ -64,14 +67,15 @@ public class SelectorFragment extends Fragment {
                                         .setAction("SI", new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
-                                                vectorLibros.remove(id);
+                                                adaptador.borrar(id);
                                                 adaptador.notifyDataSetChanged();
                                             }
                                         })
                                         .show();
                                 break;
                             case 2: //Insertar
-                                vectorLibros.add(vectorLibros.elementAt(id));
+                                int posicion = recyclerView.getChildLayoutPosition(v);
+                                adaptador.insertar((Libro) adaptador.getItem(posicion));
                                 adaptador.notifyDataSetChanged();
                                 Snackbar.make(v,"Libro insertado", Snackbar.LENGTH_INDEFINITE)
                                         .setAction("OK", new View.OnClickListener() {
@@ -96,7 +100,8 @@ public class SelectorFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ((MainActivity) actividad).mostrarDetalle(
-                        recyclerView.getChildAdapterPosition(v));
+                        (int) adaptador.getItemId(
+                                recyclerView.getChildAdapterPosition(v)));
             }
         });
 
