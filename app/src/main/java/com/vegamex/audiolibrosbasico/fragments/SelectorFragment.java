@@ -73,6 +73,11 @@ public class SelectorFragment extends Fragment {
                             case 2: //Insertar
                                 vectorLibros.add(vectorLibros.elementAt(id));
                                 adaptador.notifyDataSetChanged();
+                                Snackbar.make(v,"Libro insertado", Snackbar.LENGTH_INDEFINITE)
+                                        .setAction("OK", new View.OnClickListener() {
+                                            @Override public void onClick(View view) { }
+                                        })
+                                        .show();
                                 break;
                         }
                     }
