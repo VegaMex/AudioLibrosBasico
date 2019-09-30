@@ -51,9 +51,10 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
+        //Barra de acciones
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        //Botón flotante
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

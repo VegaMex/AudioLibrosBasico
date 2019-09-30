@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.vegamex.audiolibrosbasico.Libro;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,8 +60,15 @@ public class SelectorFragment extends Fragment {
                                 startActivity(Intent.createChooser(i, "Compartir"));
                                 break;
                             case 1: //Borrar
-                                vectorLibros.remove(id);
-                                adaptador.notifyDataSetChanged();
+                                Snackbar.make(v,"¿Estás seguro?", Snackbar.LENGTH_LONG)
+                                        .setAction("SI", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                vectorLibros.remove(id);
+                                                adaptador.notifyDataSetChanged();
+                                            }
+                                        })
+                                        .show();
                                 break;
                             case 2: //Insertar
                                 vectorLibros.add(vectorLibros.elementAt(id));
