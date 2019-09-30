@@ -23,7 +23,9 @@ public class DetalleFragment extends Fragment implements
     public static String ARG_ID_LIBRO = "id_libro";
     MediaPlayer mediaPlayer;
     MediaController mediaController;
-    @Override public View onCreateView(LayoutInflater inflador, ViewGroup
+
+    @Override
+    public View onCreateView(LayoutInflater inflador, ViewGroup
             contenedor, Bundle savedInstanceState) {
         View vista = inflador.inflate(R.layout.fragment_detalle,
                 contenedor, false);
@@ -60,12 +62,14 @@ public class DetalleFragment extends Fragment implements
     public void ponInfoLibro(int id) {
         ponInfoLibro(id, getView());
     }
-    @Override public void onPrepared(MediaPlayer mediaPlayer) {
+
+    @Override
+    public void onPrepared(MediaPlayer mediaPlayer) {
         Log.d("Audiolibros", "Entramos en onPrepared de MediaPlayer");
         mediaPlayer.start();
         mediaController.setMediaPlayer(this);
-        mediaController.setAnchorView(getView().findViewById(
-                R.id.detalle_fragment));
+        mediaController.setAnchorView(getView().findViewById(R.id.detalle_fragment));
+        mediaController.setPadding(0, 0, 0,110);
         mediaController.setEnabled(true);
         mediaController.show();
     }
