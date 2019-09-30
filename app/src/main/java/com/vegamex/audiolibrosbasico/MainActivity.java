@@ -1,5 +1,7 @@
 package com.vegamex.audiolibrosbasico;
 
+import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -65,21 +68,26 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.menu_preferencias) {
+            Toast.makeText(this, "Preferencias", Toast.LENGTH_LONG).show();
+            return true;
+        } else if (id == R.id.menu_ultimo) {
+            irUltimoVisitado();
+            return true;
+        } else if (id == R.id.menu_buscar) {
+            return true;
+        } else if (id == R.id.menu_acerca) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Mensaje de Acerca De");
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.create().show();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -99,5 +107,22 @@ public class MainActivity extends AppCompatActivity {
             transaccion.addToBackStack(null);
             transaccion.commit();
         }
+        SharedPreferences pref = getSharedPreferences(
+                "com.example.audiolibros_internal", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("ultimo", id);
+        editor.commit();
     }
+
+    public void irUltimoVisitado() {
+        SharedPreferences pref = getSharedPreferences(
+                "com.example.audiolibros_internal", MODE_PRIVATE);
+        int id = pref.getInt("ultimo", -1);
+        if (id >= 0) {
+            mostrarDetalle(id);
+        } else {
+            Toast.makeText(this,"Sin última vista",Toast.LENGTH_LONG).show();
+        }
+    }
+
 }
