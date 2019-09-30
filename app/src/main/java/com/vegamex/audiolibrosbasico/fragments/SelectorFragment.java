@@ -21,7 +21,7 @@ import com.vegamex.audiolibrosbasico.R;
 
 import java.util.Vector;
 
-public class SelectorFragment<Libro> extends Fragment {
+public class SelectorFragment extends Fragment {
     private Activity actividad;
     private RecyclerView recyclerView;
     private AdaptadorLibros adaptador;
@@ -32,25 +32,11 @@ public class SelectorFragment<Libro> extends Fragment {
             this.actividad = (Activity) contexto;
             Aplicacion app = (Aplicacion) actividad.getApplication();
             adaptador = app.getAdaptador();
-            vectorLibros = (Vector<Libro>) app.getVectorLibros();
+            vectorLibros = app.getVectorLibros();
         }
     }
     @Override public View onCreateView(LayoutInflater inflador, ViewGroup
             contenedor, Bundle savedInstanceState) {
-
-        View vista = inflador.inflate(R.layout.fragment_selector,
-                contenedor, false);
-        recyclerView = (RecyclerView) vista.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(actividad,2));
-        recyclerView.setAdapter(adaptador);
-        adaptador.setOnItemClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) actividad).mostrarDetalle(
-                        recyclerView.getChildAdapterPosition(v));
-            }
-        });
-        return vista;
 
         adaptador.setOnItemLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(final View v) {
@@ -83,6 +69,21 @@ public class SelectorFragment<Libro> extends Fragment {
                 return true;
             }
         });
+
+        View vista = inflador.inflate(R.layout.fragment_selector,
+                contenedor, false);
+        recyclerView = (RecyclerView) vista.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new GridLayoutManager(actividad,2));
+        recyclerView.setAdapter(adaptador);
+        adaptador.setOnItemClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) actividad).mostrarDetalle(
+                        recyclerView.getChildAdapterPosition(v));
+            }
+        });
+        return vista;
+
 
     }
 }
