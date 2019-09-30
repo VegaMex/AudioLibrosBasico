@@ -76,11 +76,6 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.menu_preferencias) {
             Toast.makeText(this, "Preferencias", Toast.LENGTH_LONG).show();
             return true;
-        } else if (id == R.id.menu_ultimo) {
-            irUltimoVisitado();
-            return true;
-        } else if (id == R.id.menu_buscar) {
-            return true;
         } else if (id == R.id.menu_acerca) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Mensaje de Acerca De");
