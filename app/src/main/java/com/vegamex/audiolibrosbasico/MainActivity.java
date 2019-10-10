@@ -4,12 +4,15 @@ import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.vegamex.audiolibrosbasico.fragments.DetalleFragment;
 import com.vegamex.audiolibrosbasico.fragments.SelectorFragment;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -27,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private AdaptadorLibrosFiltro adaptador;
+    private AppBarLayout appBarLayout;
+    private TabLayout tabs;
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +92,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         adaptador = ((Aplicacion) getApplicationContext()).getAdaptador();
+
+        // Navigation Drawer
+        drawer = (DrawerLayout) findViewById(
+                R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(this,
+                drawer, toolbar, R.string.drawer_open, R.string. drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = (NavigationView) findViewById(
+                R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
+
+        appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
     }
 
     @Override
@@ -179,6 +199,18 @@ public class MainActivity extends AppCompatActivity {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    public void mostrarElementos(boolean mostrar) {
+        appBarLayout.setExpanded(mostrar);
+        toggle.setDrawerIndicatorEnabled(mostrar);
+        if (mostrar) {
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            tabs.setVisibility(View.VISIBLE);
+        } else {
+            tabs.setVisibility(View.GONE);
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
     }
 
