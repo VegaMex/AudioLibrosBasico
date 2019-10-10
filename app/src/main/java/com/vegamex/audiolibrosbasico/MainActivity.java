@@ -12,6 +12,8 @@ import com.vegamex.audiolibrosbasico.fragments.SelectorFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,19 +41,6 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.contenedor_pequeno, primerFragment).commit();
         }
 
-//        Aplicacion app = (Aplicacion) getApplication();
-//        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-//        recyclerView.setAdapter(app.getAdaptador());
-//        layoutManager = new GridLayoutManager(this, 2);
-//        recyclerView.setLayoutManager(layoutManager);
-//
-//        app.getAdaptador().setOnItemClickListener(new View.OnClickListener(){
-//            @Override public void onClick(View v) {
-//                Toast.makeText(MainActivity.this, "Seleccionado el elemento: "
-//                                + recyclerView.getChildAdapterPosition(v),
-//                        Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         //Barra de acciones
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -64,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
                 irUltimoVisitado();
             }
         });
+
+        Aplicacion app = (Aplicacion) getApplication();
 
         //Pestañas
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
@@ -108,6 +99,11 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.menu_preferencias) {
             Toast.makeText(this, "Preferencias", Toast.LENGTH_LONG).show();
             return true;
+        } else if (id == R.id.menu_ultimo) {
+            irUltimoVisitado();
+            return true;
+        } else if (id == R.id.menu_buscar) {
+            return true;
         } else if (id == R.id.menu_acerca) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Mensaje de Acerca De");
@@ -149,6 +145,40 @@ public class MainActivity extends AppCompatActivity {
             mostrarDetalle(id);
         } else {
             Toast.makeText(this,"Sin última vista",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    //@Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.nav_todos) {
+            adaptador.setGenero("");
+            adaptador.notifyDataSetChanged();
+        } else if (id == R.id.nav_epico) {
+            adaptador.setGenero(Libro.G_EPICO);
+            adaptador.notifyDataSetChanged();
+        } else if (id == R.id.nav_XIX) {
+            adaptador.setGenero(Libro.G_S_XIX);
+            adaptador.notifyDataSetChanged();
+        } else if (id == R.id.nav_suspense) {
+            adaptador.setGenero(Libro.G_SUSPENSE);
+            adaptador.notifyDataSetChanged();
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(
+                R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(
+                R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
     }
 
