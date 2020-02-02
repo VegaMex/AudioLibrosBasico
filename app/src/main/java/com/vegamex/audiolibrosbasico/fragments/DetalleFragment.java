@@ -1,5 +1,6 @@
 package com.vegamex.audiolibrosbasico.fragments;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,14 +16,17 @@ import androidx.fragment.app.Fragment;
 import com.vegamex.audiolibrosbasico.Aplicacion;
 import com.vegamex.audiolibrosbasico.Libro;
 import com.vegamex.audiolibrosbasico.R;
+import com.vegamex.audiolibrosbasico.Serviciador;
+
 import java.io.IOException;
 
 public class DetalleFragment extends Fragment implements
-        View.OnTouchListener, MediaPlayer.OnPreparedListener,
-        MediaController.MediaPlayerControl {
+        View.OnTouchListener, MediaPlayer.OnPreparedListener
+        //,MediaController.MediaPlayerControl
+{
     public static String ARG_ID_LIBRO = "id_libro";
     MediaPlayer mediaPlayer;
-    MediaController mediaController;
+    //MediaController mediaController;
 
     @Override
     public View onCreateView(LayoutInflater inflador, ViewGroup
@@ -38,6 +42,7 @@ public class DetalleFragment extends Fragment implements
         }
         return vista;
     }
+
     private void ponInfoLibro(int id, View vista) {
         Libro libro = ((Aplicacion) getActivity().getApplication()).getVectorLibros().elementAt(id);
         ((TextView) vista.findViewById(R.id.titulo)).setText(libro.titulo);
@@ -45,19 +50,20 @@ public class DetalleFragment extends Fragment implements
         ((ImageView) vista.findViewById(R.id.portada))
                 .setImageResource(libro.recursoImagen);
         vista.setOnTouchListener(this);
-        if (mediaPlayer != null){
+/*        if (mediaPlayer != null){
             mediaPlayer.release();
         }
         mediaPlayer = new MediaPlayer();
-        mediaPlayer.setOnPreparedListener(this);
-        mediaController = new MediaController(getActivity());
-        Uri audio = Uri.parse(libro.urlAudio);
-        try {
+        mediaPlayer.setOnPreparedListener(this);*/ //Cosa que inicializa el mediaplayer
+        //mediaController = new MediaController(getActivity());
+        //Uri audio = Uri.parse(libro.urlAudio);
+        startService(libro.titulo, libro.urlAudio);
+/*        try {
             mediaPlayer.setDataSource(getActivity(), audio);
             mediaPlayer.prepareAsync();
         } catch (IOException e) {
             Log.e("Audiolibros", "ERROR: No se puede reproducir "+audio,e);
-        }
+        }*/
     }
     public void ponInfoLibro(int id) {
         ponInfoLibro(id, getView());
@@ -66,19 +72,22 @@ public class DetalleFragment extends Fragment implements
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
         Log.d("Audiolibros", "Entramos en onPrepared de MediaPlayer");
-        mediaPlayer.start();
-        mediaController.setMediaPlayer(this);
-        mediaController.setAnchorView(getView().findViewById(R.id.detalle_fragment));
-        mediaController.setPadding(0, 0, 0,110);
-        mediaController.setEnabled(true);
-        mediaController.show();
+        //mediaPlayer.start();//Comienza la reproducción
+
+
+
+        //mediaController.setMediaPlayer(this);
+        //mediaController.setAnchorView(getView().findViewById(R.id.detalle_fragment));
+        //mediaController.setPadding(0, 0, 0,110);
+        //mediaController.setEnabled(true);
+        //mediaController.show();
     }
     @Override public boolean onTouch(View vista, MotionEvent evento) {
-        mediaController.show();
+        //mediaController.show();
         return false;
     }
     @Override public void onStop() {
-        mediaController.hide();
+        //mediaController.hide();
         try {
             mediaPlayer.stop();
             mediaPlayer.release();
@@ -87,7 +96,7 @@ public class DetalleFragment extends Fragment implements
         }
         super.onStop();
     }
-    @Override public boolean canPause() {
+/*    @Override public boolean canPause() {
         return true;
     }
     @Override public boolean canSeekBackward() {
@@ -123,5 +132,19 @@ public class DetalleFragment extends Fragment implements
     }
     @Override public int getAudioSessionId() {
         return 0;
+    }*/
+
+
+    public void startService(String nombre, String uri){
+        Intent serviceIntent = new Intent(getContext(), Serviciador.class);
+        serviceIntent.putExtra("nombreLibro", nombre);
+        serviceIntent.putExtra("uriLibro", uri);
+        getActivity().startService(serviceIntent);
     }
+
+    public void stopService(){
+        Intent serviceIntent = new Intent(getContext(), Serviciador.class);
+        getActivity().stopService(serviceIntent);
+    }
+
 }
