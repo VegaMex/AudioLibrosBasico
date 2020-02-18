@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -21,12 +22,15 @@ import com.vegamex.audiolibrosbasico.Serviciador;
 import java.io.IOException;
 
 public class DetalleFragment extends Fragment implements
-        View.OnTouchListener, MediaPlayer.OnPreparedListener
+        //View.OnTouchListener,
+        View.OnLongClickListener,
+        MediaPlayer.OnPreparedListener
         //,MediaController.MediaPlayerControl
 {
     public static String ARG_ID_LIBRO = "id_libro";
     MediaPlayer mediaPlayer;
     //MediaController mediaController;
+    Button detener, pausar;
 
     @Override
     public View onCreateView(LayoutInflater inflador, ViewGroup
@@ -40,6 +44,7 @@ public class DetalleFragment extends Fragment implements
         } else {
             ponInfoLibro(0, vista);
         }
+        vista.setOnLongClickListener(this);
         return vista;
     }
 
@@ -49,7 +54,14 @@ public class DetalleFragment extends Fragment implements
         ((TextView) vista.findViewById(R.id.autor)).setText(libro.autor);
         ((ImageView) vista.findViewById(R.id.portada))
                 .setImageResource(libro.recursoImagen);
-        vista.setOnTouchListener(this);
+        (vista.findViewById(R.id.Detener)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopService();
+            }
+        });
+        //vista.setOnTouchListener(this);
+        //vista.setOnLongClickListener(this);
 /*        if (mediaPlayer != null){
             mediaPlayer.release();
         }
@@ -82,10 +94,17 @@ public class DetalleFragment extends Fragment implements
         //mediaController.setEnabled(true);
         //mediaController.show();
     }
-    @Override public boolean onTouch(View vista, MotionEvent evento) {
+/*    @Override public boolean onTouch(View vista, MotionEvent evento) {
         //mediaController.show();
         return false;
+    }*/
+
+    @Override
+    public boolean onLongClick(View v) {
+        stopService();
+        return false;
     }
+
     @Override public void onStop() {
         //mediaController.hide();
         try {
@@ -146,5 +165,4 @@ public class DetalleFragment extends Fragment implements
         Intent serviceIntent = new Intent(getContext(), Serviciador.class);
         getActivity().stopService(serviceIntent);
     }
-
 }
